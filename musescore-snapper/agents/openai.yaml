@@ -1,0 +1,4 @@
+interface:
+  display_name: "MuseScore Snapper"
+  short_description: "搜索或打开 MuseScore 曲谱，逐页截图并保存到曲名文件夹"
+  default_prompt: "使用 $musescore-snapper 将这份 MuseScore 曲谱逐页保存为 PNG；如果我未提供保存目录，请先询问确认。"

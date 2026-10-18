@@ -9,6 +9,7 @@
 | [tldr-en-page-maintainer](tldr-en-page-maintainer/SKILL.md) | 创建、更新和润色英文 tldr 页面     |
 | [tldr-zh-page-maintainer](tldr-zh-page-maintainer/SKILL.md) | 翻译、同步和润色简体中文 tldr 页面 |
 | [image-generator](image-generator/SKILL.md)                 | 生成、编辑和批量生成图片           |
+| [musescore-snapper](musescore-snapper/SKILL.md)             | 搜索曲谱并逐页截图保存 PNG         |
 
 ### tldr-en-page-maintainer
 
@@ -41,6 +42,17 @@
 ```text
 @image-generator 生成一张 16:9 的科技主题演示封面，保存到 output/cover.png。
 @image-generator 编辑 input.png，保留布局，提高对比度，让标题更清晰，保存到 output/edited.png。
+```
+
+### musescore-snapper
+
+从 MuseScore 链接获取完整谱面截图；只给曲名时先搜索并确认版本，未提供保存目录时先询问。在确认的目录下创建曲名文件夹，逐页保存为 `1.png`、`2.png`……。
+
+使用示例：
+
+```text
+@musescore-snapper 把 https://musescore.com/user/44509610/scores/7703828 保存到 ~/Music/Scores
+@musescore-snapper 给我《穿越时空的思念》的钢琴谱
 ```
 
 ## 日常使用的第三方技能
