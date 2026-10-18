@@ -1,61 +1,37 @@
-# 我的 Skills
+# skills
 
-这里收录我创建和维护的技能，以及日常使用的第三方技能。本仓库维护的技能提供源码、使用说明与示例；第三方技能按使用场景归类，仅列出技能名称和上游链接。
+我创建的skills && 我使用的skills。
 
-## 本仓库维护
+## 目录
 
-| 技能                                                        | 用途                               |
-| ----------------------------------------------------------- | ---------------------------------- |
-| [tldr-en-page-maintainer](tldr-en-page-maintainer/SKILL.md) | 创建、更新和润色英文 tldr 页面     |
-| [tldr-zh-page-maintainer](tldr-zh-page-maintainer/SKILL.md) | 翻译、同步和润色简体中文 tldr 页面 |
-| [image-generator](image-generator/SKILL.md)                 | 生成、编辑和批量生成图片           |
-| [musescore-snapper](musescore-snapper/SKILL.md)             | 搜索曲谱并逐页截图保存 PNG         |
+- [我创建的 skills](#我创建的-skills)
+  - [总览](#总览)
+  - [使用示例](#使用示例)
+- [我使用的第三方 skills](#我使用的第三方-skills)
 
-### tldr-en-page-maintainer
+## 我创建的 skills
 
-维护 [tldr-pages 项目](https://github.com/tldr-pages/tldr)中的英文命令页面，适用于补充缺失页面、根据当前命令行为更新内容，以及润色已有描述。
+### 总览
 
-使用示例：
+|                                                                                        名称                                                                                         | 用途                                                                       |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------- |
+|  <img src=".skill-images/tldr-en-page-maintainer.png" width="160" alt="带 EN 和终端提示符的英文命令页与修改笔"><br>**[tldr-en-page-maintainer](tldr-en-page-maintainer/SKILL.md)**  | 创建、更新和润色英文 [tldr](https://github.com/tldr-pages/tldr) 页面。     |
+| <img src=".skill-images/tldr-zh-page-maintainer.png" width="160" alt="带终端提示符的英文命令页转换为中文命令页"><br>**[tldr-zh-page-maintainer](tldr-zh-page-maintainer/SKILL.md)** | 翻译、同步和润色简体中文 [tldr](https://github.com/tldr-pages/tldr) 页面。 |
+|                 <img src=".skill-images/image-generator.png" width="160" alt="画笔笔触化作月亮与山丘画面的剪影"><br>**[image-generator](image-generator/SKILL.md)**                 | 生成、编辑和批量生成图片。                                                 |
+|                     <img src=".skill-images/visual-summarizer.png" width="160" alt="书页汇成飞鸟的剪影"><br>**[visual-summarizer](visual-summarizer/SKILL.md)**                     | 生成指定内容的概括性图片。                                                 |
+|               <img src=".skill-images/musescore-snapper.png" width="160" alt="取景框中的乐谱与叠放图片的剪影"><br>**[musescore-snapper](musescore-snapper/SKILL.md)**               | 搜索曲谱并逐页截图保存 PNG。                                               |
 
-```text
-@tldr-en-page-maintainer 为 git commit 补充英文页面。
-@tldr-en-page-maintainer 根据当前官方文档更新 jq 的英文页面。
-```
-
-### tldr-zh-page-maintainer
-
-维护 [tldr-pages 项目](https://github.com/tldr-pages/tldr)中的简体中文命令页面，适用于从英文源页面创建翻译、同步英文源页面变更，以及润色已有翻译。
-
-使用示例：
+### 使用示例
 
 ```text
-@tldr-zh-page-maintainer 为 git commit 补充简体中文翻译。
-@tldr-zh-page-maintainer 将 jq 的简体中文页面与当前英文页面同步。
+$tldr-en-page-maintainer 更新 rg 的英文页面。
+$tldr-zh-page-maintainer 同步 rg 的中文页面，与英文版保持一致。
+$image-generator 画一张钢琴主题的手机壁纸。
+$visual-summarizer 给 musescore-snapper/ 生成一张概括图。
+$musescore-snapper 帮我找《Fly Me To the Moon》的钢琴谱，截图保存到 ~/Music/Scores。
 ```
 
-### image-generator
-
-适用于根据文字描述生成图片、修改已有图片，以及批量生成多张图片。
-
-使用示例：
-
-```text
-@image-generator 生成一张 16:9 的科技主题演示封面，保存到 output/cover.png。
-@image-generator 编辑 input.png，保留布局，提高对比度，让标题更清晰，保存到 output/edited.png。
-```
-
-### musescore-snapper
-
-从 MuseScore 链接获取完整谱面截图；只给曲名时先搜索并确认版本，未提供保存目录时先询问。在确认的目录下创建曲名文件夹，逐页保存为 `1.png`、`2.png`……。
-
-使用示例：
-
-```text
-@musescore-snapper 把 https://musescore.com/user/44509610/scores/7703828 保存到 ~/Music/Scores
-@musescore-snapper 给我《穿越时空的思念》的钢琴谱
-```
-
-## 日常使用的第三方技能
+## 我使用的第三方 skills
 
 ### 前端开发与设计
 
