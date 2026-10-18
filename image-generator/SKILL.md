@@ -20,29 +20,29 @@ Use the bundled scripts instead of rewriting image API calls. The scripts handle
 Install dependencies in the active environment:
 
 ```bash
-python -m pip install -r image_generator/scripts/requirements.txt
+python -m pip install -r image-generator/scripts/requirements.txt
 ```
 
 Create or update the shared runtime:
 
 ```bash
-python image_generator/scripts/runtime.py bootstrap
-python image_generator/scripts/runtime.py doctor
+python image-generator/scripts/runtime.py bootstrap
+python image-generator/scripts/runtime.py doctor
 ```
 
 Configure OpenAI SDK credentials when Codex OAuth is unavailable:
 
 ```bash
-python image_generator/scripts/runtime.py config \
+python image-generator/scripts/runtime.py config \
   --api-key "your-api-key" \
-  --model gpt-image-2 \
+  --model gpt-image-2.5-sunburst \
   --backend openai
 ```
 
 Generate one image:
 
 ```bash
-python image_generator/scripts/image_gen.py generate \
+python image-generator/scripts/image_gen.py generate \
   --backend auto \
   --prompt "A clean 16:9 presentation cover about blockchain infrastructure" \
   --size 2048x1152 \
@@ -53,7 +53,7 @@ python image_generator/scripts/image_gen.py generate \
 Edit an existing image:
 
 ```bash
-python image_generator/scripts/image_gen.py edit \
+python image-generator/scripts/image_gen.py edit \
   --backend auto \
   --image input.png \
   --prompt "Keep the layout, improve contrast, and make the title more readable" \
@@ -63,7 +63,7 @@ python image_generator/scripts/image_gen.py edit \
 Run a dry run before calling the API:
 
 ```bash
-python image_generator/scripts/image_gen.py generate \
+python image-generator/scripts/image_gen.py generate \
   --backend auto \
   --prompt "test image" \
   --out output/test.png \
@@ -82,7 +82,7 @@ Use JSONL where each non-empty line is either a prompt string or an object with 
 Then run:
 
 ```bash
-python image_generator/scripts/image_gen.py generate-batch \
+python image-generator/scripts/image_gen.py generate-batch \
   --backend auto \
   --input jobs.jsonl \
   --out-dir output/images \
@@ -92,8 +92,12 @@ python image_generator/scripts/image_gen.py generate-batch \
 
 ## Notes
 
-- Default model: `gpt-image-2`.
+- Default model: `gpt-image-2.5-sunburst`. Use `--model gpt-image-2.5-flare` for faster everyday generation, or explicitly select `gpt-image-2` for an existing workflow.
+- GPT Image 2.5 supports `quality=low|medium|high|xhigh|max|auto`. The CLI keeps `medium` as its default; `xhigh` and `max` are rejected for older models.
 - Default runtime home: `~/.image-generator`; override with `IMAGE_GENERATOR_HOME`.
 - New runtime config uses `IMAGE_GENERATOR_IMAGE_MODEL` and `IMAGE_GENERATOR_IMAGE_BACKEND`.
 - Legacy `IMAGE2_*` and `CODEX_PPT_*` variables are still read for compatibility.
-- For transparent backgrounds, use `--model gpt-image-1.5 --background transparent`; `gpt-image-2` does not support transparent backgrounds.
+- GPT Image 2.5 supports `--background transparent` with the CLI’s PNG output. GPT Image 2 transparency is available in preview; no automatic downgrade to an older model is needed.
+- Omit `--input-fidelity` for GPT Image 2/2.5. Older workflows retain their existing options.
+- Explicit `--model` values and saved runtime model configuration take precedence over the built-in default. To migrate a pinned runtime, run `python image-generator/scripts/runtime.py config --model gpt-image-2.5-sunburst`.
+- Verified model parameters: [official image generation guide](https://developers.openai.com/api/docs/guides/image-generation) and [image edit API](https://developers.openai.com/api/reference/resources/images/methods/edit), checked 2026-10-18.

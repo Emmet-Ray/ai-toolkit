@@ -18,10 +18,10 @@ from typing import Dict, Iterable, Optional
 import urllib.error
 import urllib.request
 import venv
+from image_models import DEFAULT_MODEL
 
 DEFAULT_RUNTIME_HOME = "~/.image-generator"
 DEFAULT_CODEX_AUTH_FILE = "~/.codex/auth.json"
-DEFAULT_MODEL = "gpt-image-2"
 DEFAULT_IMAGE_BACKEND = "auto"
 ENV_FIELDS = (
     "OPENAI_API_KEY",
@@ -124,7 +124,7 @@ def _write_env_file(path: Path, values: Dict[str, str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "# image-generator shared runtime configuration",
-        "# Used by image_generator/scripts/image_gen.py and runtime.py.",
+        "# Used by image-generator/scripts/image_gen.py and runtime.py.",
     ]
     for key in ENV_FIELDS:
         value = values.get(key, "")

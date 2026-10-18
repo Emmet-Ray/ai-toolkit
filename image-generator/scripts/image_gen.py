@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """Standalone CLI for image generation or editing with GPT Image models.
 
-Used when Codex's built-in image tool is unavailable, when the user explicitly
-opts into API mode, or when explicit transparent output requires the
-`gpt-image-1.5` fallback path.
+Supports explicit local CLI workflows with Codex OAuth or the OpenAI SDK.
 
-Defaults to gpt-image-2 and sends prompts exactly as provided.
+Defaults to gpt-image-2.5-sunburst and sends prompts exactly as provided.
 Reads OPENAI_API_KEY, and optionally OPENAI_BASE_URL for OpenAI SDK routing.
 """
 
@@ -29,8 +27,8 @@ from image_providers.codex_oauth import (
     CodexOAuthImageProvider,
 )
 from image_providers.openai_provider import OpenAIImageProvider
+from image_models import DEFAULT_MODEL, model_capabilities
 
-DEFAULT_MODEL = "gpt-image-2"
 DEFAULT_SIZE = "2048x1152"
 DEFAULT_QUALITY = "medium"
 DEFAULT_OUTPUT_FORMAT = "png"
@@ -39,11 +37,9 @@ DEFAULT_OUTPUT_PATH = "output/imagegen/output.png"
 GPT_IMAGE_MODEL_PREFIX = "gpt-image-"
 
 ALLOWED_LEGACY_SIZES = {"1024x1024", "1536x1024", "1024x1536", "auto"}
-ALLOWED_QUALITIES = {"low", "medium", "high", "auto"}
 ALLOWED_BACKGROUNDS = {"transparent", "opaque", "auto", None}
 ALLOWED_INPUT_FIDELITIES = {"low", "high", None}
 
-GPT_IMAGE_2_MODEL = "gpt-image-2"
 GPT_IMAGE_2_MIN_PIXELS = 655_360
 GPT_IMAGE_2_MAX_PIXELS = 8_294_400
 GPT_IMAGE_2_MAX_EDGE = 3840
@@ -283,7 +279,7 @@ def _parse_size(size: str) -> Optional[Tuple[int, int]]:
     return int(match.group(1)), int(match.group(2))
 
 
-def _validate_gpt_image_2_size(size: str) -> None:
+def _validate_flexible_size(size: str) -> None:
     if size == "auto":
         return
 
@@ -297,20 +293,20 @@ def _validate_gpt_image_2_size(size: str) -> None:
     total_pixels = width * height
 
     if max_edge > GPT_IMAGE_2_MAX_EDGE:
-        _die("gpt-image-2 size maximum edge length must be less than or equal to 3840px.")
+        _die("size maximum edge length must be less than or equal to 3840px.")
     if width % 16 != 0 or height % 16 != 0:
-        _die("gpt-image-2 size width and height must be multiples of 16px.")
+        _die("size width and height must be multiples of 16px.")
     if max_edge / min_edge > GPT_IMAGE_2_MAX_RATIO:
-        _die("gpt-image-2 size long edge to short edge ratio must not exceed 3:1.")
+        _die("size long edge to short edge ratio must not exceed 3:1.")
     if total_pixels < GPT_IMAGE_2_MIN_PIXELS or total_pixels > GPT_IMAGE_2_MAX_PIXELS:
         _die(
-            "gpt-image-2 size total pixels must be at least 655,360 and no more than 8,294,400."
+            "size total pixels must be at least 655,360 and no more than 8,294,400."
         )
 
 
 def _validate_size(size: str, model: str) -> None:
-    if _is_gpt_image_2_model(model):
-        _validate_gpt_image_2_size(size)
+    if model_capabilities(model).flexible_sizes:
+        _validate_flexible_size(size)
         return
 
     if size not in ALLOWED_LEGACY_SIZES:
@@ -319,9 +315,10 @@ def _validate_size(size: str, model: str) -> None:
         )
 
 
-def _validate_quality(quality: str) -> None:
-    if quality not in ALLOWED_QUALITIES:
-        _die("quality must be one of low, medium, high, or auto.")
+def _validate_quality(quality: str, model: str) -> None:
+    allowed = model_capabilities(model).qualities
+    if quality not in allowed:
+        _die(f"quality for {model} must be one of {', '.join(sorted(allowed))}.")
 
 
 def _validate_background(background: Optional[str]) -> None:
@@ -329,40 +326,19 @@ def _validate_background(background: Optional[str]) -> None:
         _die("background must be one of transparent, opaque, or auto.")
 
 
-def _validate_input_fidelity(input_fidelity: Optional[str]) -> None:
+def _validate_input_fidelity(input_fidelity: Optional[str], model: str) -> None:
     if input_fidelity not in ALLOWED_INPUT_FIDELITIES:
         _die("input-fidelity must be one of low or high.")
+    if input_fidelity is not None and not model_capabilities(model).input_fidelity:
+        _die(f"input_fidelity is only supported on legacy GPT Image models; omit it for {model}.")
 
 
 def _validate_model(model: str) -> None:
     if GPT_IMAGE_MODEL_PREFIX not in model:
         _die(
             "model must be a GPT Image model name containing 'gpt-image-' "
-            "(for example gpt-image-2, openai/gpt-image-2, gpt-image-1.5, "
+            "(for example gpt-image-2.5-sunburst, gpt-image-2.5-flare, openai/gpt-image-2, gpt-image-1.5, "
             "gpt-image-1, or gpt-image-1-mini)."
-        )
-
-
-def _is_gpt_image_2_model(model: str) -> bool:
-    return GPT_IMAGE_2_MODEL in model
-
-
-def _validate_model_specific_options(
-    *,
-    model: str,
-    background: Optional[str],
-    input_fidelity: Optional[str] = None,
-) -> None:
-    if not _is_gpt_image_2_model(model):
-        return
-    if background == "transparent":
-        _die(
-            "transparent backgrounds are not supported in gpt-image-2, the latest model. "
-            "Use --model gpt-image-1.5 --background transparent instead."
-        )
-    if input_fidelity is not None:
-        _die(
-            "input_fidelity is not supported in gpt-image-2 because image inputs always use high fidelity for this model."
         )
 
 
@@ -376,9 +352,8 @@ def _validate_generate_payload(payload: Dict[str, Any]) -> None:
     quality = str(payload.get("quality", DEFAULT_QUALITY))
     background = payload.get("background")
     _validate_size(size, model)
-    _validate_quality(quality)
+    _validate_quality(quality, model)
     _validate_background(background)
-    _validate_model_specific_options(model=model, background=background)
 
 
 def _build_output_paths(
@@ -690,7 +665,6 @@ def _edit(args: argparse.Namespace) -> None:
     }
     payload = {k: v for k, v in payload.items() if v is not None}
 
-    _validate_input_fidelity(args.input_fidelity)
     output_paths = _build_output_paths(args.out, args.n, args.out_dir)
 
     provider = _create_provider(args)
@@ -781,13 +755,9 @@ def main() -> int:
 
     _validate_model(args.model)
     _validate_size(args.size, args.model)
-    _validate_quality(args.quality)
+    _validate_quality(args.quality, args.model)
     _validate_background(args.background)
-    _validate_model_specific_options(
-        model=args.model,
-        background=args.background,
-        input_fidelity=getattr(args, "input_fidelity", None),
-    )
+    _validate_input_fidelity(getattr(args, "input_fidelity", None), args.model)
     args.func(args)
     return 0
 
