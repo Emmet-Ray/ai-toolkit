@@ -1,0 +1,4 @@
+interface:
+  display_name: "Visual Summarizer"
+  short_description: "读取文字、文件或文件夹，提炼核心含义，按指定艺术风格生成一张概括图片"
+  default_prompt: "使用 $visual-summarizer 概括这个文件夹的核心内容，生成一张黑白叙事剪影风格的图片。"
