@@ -13,13 +13,42 @@
 
 ### 总览
 
-|                                                                                        名称                                                                                         | 用途                                                                       |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------- |
-|  <img src=".skill-images/tldr-en-page-maintainer.png" width="160" alt="带 EN 和终端提示符的英文命令页与修改笔"><br>**[tldr-en-page-maintainer](tldr-en-page-maintainer/SKILL.md)**  | 创建、更新和润色英文 [tldr](https://github.com/tldr-pages/tldr) 页面。     |
-| <img src=".skill-images/tldr-zh-page-maintainer.png" width="160" alt="带终端提示符的英文命令页转换为中文命令页"><br>**[tldr-zh-page-maintainer](tldr-zh-page-maintainer/SKILL.md)** | 翻译、同步和润色简体中文 [tldr](https://github.com/tldr-pages/tldr) 页面。 |
-|                 <img src=".skill-images/image-generator.png" width="160" alt="画笔笔触化作月亮与山丘画面的剪影"><br>**[image-generator](image-generator/SKILL.md)**                 | 生成、编辑和批量生成图片。                                                 |
-|                     <img src=".skill-images/visual-summarizer.png" width="160" alt="书页汇成飞鸟的剪影"><br>**[visual-summarizer](visual-summarizer/SKILL.md)**                     | 生成指定内容的概括性图片。                                                 |
-|               <img src=".skill-images/musescore-snapper.png" width="160" alt="取景框中的乐谱与叠放图片的剪影"><br>**[musescore-snapper](musescore-snapper/SKILL.md)**               | 搜索曲谱并逐页截图保存 PNG。                                               |
+<!-- Each skill has its own row group so GitHub does not apply alternating row backgrounds. -->
+<table>
+  <thead>
+    <tr><th align="center">名称</th><th align="left">用途</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><img src=".skill-images/tldr-en-page-maintainer.png" width="160" alt="带 EN 和终端提示符的英文命令页与修改笔"><br><strong><a href="tldr-en-page-maintainer/SKILL.md">tldr-en-page-maintainer</a></strong></td>
+      <td>创建、更新和润色英文 <a href="https://github.com/tldr-pages/tldr">tldr</a> 页面</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td align="center"><img src=".skill-images/tldr-zh-page-maintainer.png" width="160" alt="带终端提示符的英文命令页转换为中文命令页"><br><strong><a href="tldr-zh-page-maintainer/SKILL.md">tldr-zh-page-maintainer</a></strong></td>
+      <td>翻译、同步和润色简体中文 <a href="https://github.com/tldr-pages/tldr">tldr</a> 页面</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td align="center"><img src=".skill-images/image-generator.png" width="160" alt="画笔笔触化作月亮与山丘画面的剪影"><br><strong><a href="image-generator/SKILL.md">image-generator</a></strong></td>
+      <td>生成、编辑图片</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td align="center"><img src=".skill-images/visual-summarizer.png" width="160" alt="书页汇成飞鸟的剪影"><br><strong><a href="visual-summarizer/SKILL.md">visual-summarizer</a></strong></td>
+      <td>生成指定内容的概括性图片</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td align="center"><img src=".skill-images/musescore-snapper.png" width="160" alt="取景框中的乐谱与叠放图片的剪影"><br><strong><a href="musescore-snapper/SKILL.md">musescore-snapper</a></strong></td>
+      <td>搜索曲谱并逐页截图保存 PNG</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 使用示例
 
