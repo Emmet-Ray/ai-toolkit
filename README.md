@@ -44,8 +44,8 @@
   </tbody>
   <tbody>
     <tr>
-      <td align="center"><img src=".skill-images/musescore-snapper.png" width="160" alt="取景框中的乐谱与叠放图片的剪影"><br><strong><a href="musescore-snapper/SKILL.md">musescore-snapper</a></strong></td>
-      <td>搜索曲谱并逐页截图保存 PNG</td>
+      <td align="center"><img src=".skill-images/sheet-music-snapper.png" width="160" alt="多个曲谱网页汇入取景框并保存为叠放谱页的剪影"><br><strong><a href="sheet-music-snapper/SKILL.md">sheet-music-snapper</a></strong></td>
+      <td>搜索或打开各网站可见曲谱，滚动或翻页截图保存 PNG</td>
     </tr>
   </tbody>
 </table>
@@ -56,8 +56,9 @@
 $tldr-en-page-maintainer 更新 rg 的英文页面。
 $tldr-zh-page-maintainer 同步 rg 的中文页面，与英文版保持一致。
 $image-generator 画一张钢琴主题的手机壁纸。
-$visual-summarizer 给 musescore-snapper/ 生成一张概括图。
-$musescore-snapper 帮我找《Fly Me To the Moon》的钢琴谱，截图保存到 ~/Music/Scores。
+$visual-summarizer 给 sheet-music-snapper/ 生成一张概括图。
+$sheet-music-snapper 将这个曲谱链接逐页截图保存到 ~/Music/Scores。
+$sheet-music-snapper 帮我找《Fly Me To the Moon》的钢琴谱，截图保存到 ~/Music/Scores。
 ```
 
 ## 我使用的第三方 skills

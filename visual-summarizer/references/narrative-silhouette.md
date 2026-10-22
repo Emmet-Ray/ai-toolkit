@@ -35,7 +35,7 @@ Square canvas, generous margins, no shading, hatching, gradients, drop shadows, 
 
 ## 系列区分示例
 
-- `musescore-snapper`：乐谱被取景框收拢，并形成叠放的图片，概括谱面采集与保存。
+- `sheet-music-snapper`：乐谱被取景框收拢，并形成叠放的图片，概括谱面采集与保存。
 - `image-generator`：画笔与画框中的月亮、山丘产生呼应，概括画面生成。
 - `tldr-en-page-maintainer`：带 `>_` 和 `EN` 标记的简明命令页与修改笔，概括维护英文命令说明；仅用书或放大镜难以表达命令行领域。
 - `tldr-zh-page-maintainer`：两份同样带 `>_` 的对应命令页，以 `EN`、`中` 标记和转换关系表达翻译；避免以抽象横线和方块代替语言，导致含义不清。

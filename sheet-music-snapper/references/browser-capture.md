@@ -4,11 +4,14 @@
 
 ## 定位和拍摄
 
-1. 用当前浏览器打开用户链接，读页面状态确认标题和总页数。不要凭 URL 推断曲名。
-2. MuseScore 当前的谱面 `<img>` 的可访问名称类似 `… – 1 of 2 pages`。可以用 `getByRole('img', {name: /\d+ of \d+ pages/})` 定位，再读取 `getBoundingClientRect()`、`complete` 和 `naturalWidth`。若页面结构改变，重新检查实际 DOM/截图并更新定位，不能从内部状态或网络猜测页图地址。
+1. 用当前浏览器打开用户链接，读页面状态确认标题、浏览方式和可见页码；没有总数时先记录已见页，核实末尾后再填写总数。不要凭 URL 推断曲名。
+2. 从当前页面发现谱纸元素，而非套用固定选择器。图片可检查 `complete`、`naturalWidth` 及边界；SVG、Canvas、PDF 查看器使用实际可见的页面容器边界和截图核实渲染，不能要求它们具备图片属性。同一容器可能被翻页复用，不能用元素身份识别页号；以可见页码和实际谱面内容核对。无法读到 DOM 的嵌入查看器，可使用当前工具支持的视觉定位；坐标不能可靠换算到截图时停止拼接并说明限制。
+   - MuseScore 的已验证适配示例：谱面 `<img>` 的可访问名称曾类似 `… – 1 of 2 pages`，可用 `getByRole('img', {name: /\d+ of \d+ pages/})` 定位，读 `getBoundingClientRect()`、`complete`、`naturalWidth` 和可见页号。此规则仅适用于匹配该结构的页面；失效时重新检查，不从内部状态或网络猜测页图地址。
 3. 从截图和可见 DOM 边界确定 `safe_rect`：谱面滚动区中真正未被工具栏、提示等覆盖的矩形，固定栏底部的分隔线也应排除。必须横向包含整张谱纸。一个提示气泡也可能只遮住纸边一小块，先点击空白区域或正常关闭提示，再检查实际保存的截图。
 4. 用与 DOM 坐标匹配的 `tab.screenshot({fullPage:false})` 保存截图。当前浏览器返回 JPEG，因此临时文件用 `.jpg`；不要只改扩展名冒充 PNG。最终由 Python 重新编码为 PNG。其他截图 API 若确实返回 PNG，则保存 `.png`。
-5. 滚动约半个视口，检查新状态、等待页图加载后再拍。重叠应包含足够谱面以检查连续性。新一页开始时也需要记录整页边界，包括原有留白。
+5. 在实际滚动容器中滚动约半个安全区域，检查新状态、等待谱面渲染稳定后再拍。单页查看器应先补齐当前页，再用正常控件翻页；双页查看器分别记录左右纸页，避免把跨页当成一页。新内容与上一张不同且页序正确后再记录，防止同一 Canvas 翻页后仍拍到旧内容。重叠应包含足够谱面以检查连续性。新一页开始时也需要记录整页边界，包括原有留白。
+
+没有可见页号时，按可核实的纸页顺序分配编号；用相邻谱行的连续性、首尾内容和浏览进度检查漏页与重复。无分页长谱使用一个稳定的完整逻辑矩形；滚动后更新其相对视口的位置，不把当前视口当成完整长谱。若懒加载导致总高度增长，应在确认末尾和布局稳定后复核先前坐标，必要时重拍。
 
 截图中出现白色纸张但 `complete` 为 true，也不保证拍到了有效音符：看截图。第二页可能只有一行谱，下面大段留白是正常的。完整截图后再视觉确认。
 
@@ -24,13 +27,13 @@
 
 ## CUA 记录示例
 
-先用 `cua_repl` 初始化/恢复文档，并阅读浏览器和 screenshots 文档。复用当前浏览器会话和 tab。可用下列函数保存每个经过视觉检查的视口；函数不执行滚动或自动判断安全区域。
+先用 `cua_repl` 初始化/恢复文档，并阅读浏览器和 screenshots 文档。复用当前浏览器会话和 tab。可用下列函数保存每个经过视觉检查的视口；函数不执行滚动、页号识别、加载检查或自动判断安全区域；这些由当前网站的观察和适配完成。示例假设浏览器截图返回 JPEG，实际格式不同时同步更改扩展名。
 
 ```javascript
 // 在 cua_repl 中执行。tab 是已打开且确认过的曲谱标签页。
 // 使用本次任务的临时目录，最终保存目录必须另行按用户要求确认。
 var captureFs = await import('node:fs/promises');
-var captureRoot = '/tmp/musescore-capture-本次任务唯一标识';
+var captureRoot = '/tmp/sheet-music-capture-本次任务唯一标识';
 await captureFs.mkdir(captureRoot, {recursive: true});
 var captureManifest = {
   title: '从页面确认的曲名',
@@ -40,33 +43,17 @@ var captureManifest = {
 };
 var captureSession = {root: captureRoot, manifest: captureManifest};
 
-var recordScoreViewport = async function(tab, safeRect, session) {
+// observedPages 由本次页面适配取得：仅含实际已渲染且进入安全区的纸页。
+// 例如 [{number: 1, paper_rect: {x, y, width, height}}]。
+// 页号来自已核实的页序；不能由此函数自动识别。
+var recordScoreViewport = async function(tab, safeRect, observedPages, session) {
   var viewport = await tab.playwright.evaluate(() => ({
     width: window.innerWidth, height: window.innerHeight
   }));
-  var pageImages = await tab.playwright
-    .getByRole('img', {name: /\d+ of \d+ pages/})
-    .evaluateAll(elements => elements.map(el => ({
-      alt: el.getAttribute('alt'),
-      complete: el.complete && el.naturalWidth > 0,
-      rect: el.getBoundingClientRect().toJSON()
-    })));
-  var pages = [];
-  for (var entry of pageImages) {
-    var match = (entry.alt || '').match(/(\d+) of (\d+) pages/);
-    if (!match) continue;
-    if (Number(match[2]) !== session.manifest.page_count) {
-      throw new Error('页数发生变化，请重新检查页面');
-    }
-    var r = entry.rect;
-    var overlaps = r.bottom > safeRect.y && r.top < safeRect.y + safeRect.height;
-    if (!overlaps) continue;
-    if (!entry.complete) throw new Error('可见谱页尚未加载完成');
-    pages.push({number: Number(match[1]), paper_rect: {
-      x: r.x, y: r.y, width: r.width, height: r.height
-    }});
-  }
-  if (!pages.length) throw new Error('当前视口没有已加载谱页，请检查页面');
+  if (!observedPages.length) throw new Error('当前视口没有已加载谱页，请检查页面');
+  var pages = observedPages.map(page => ({
+    number: page.number, paper_rect: {...page.paper_rect}
+  }));
   var filename = `capture-${session.manifest.captures.length + 1}.jpg`;
   await captureFs.writeFile(session.root + '/' + filename,
     await tab.screenshot({fullPage: false}));
@@ -77,7 +64,7 @@ var recordScoreViewport = async function(tab, safeRect, session) {
 };
 ```
 
-每次滚动/关闭浮层后先读取新状态，再确定 `safeRect`，调用 `recordScoreViewport(tab, safeRect, captureSession)`。每份曲谱使用自己的会话对象。安全区域改变时重新记录，不能复用过期坐标。检查已保存截图与记录是否对应；纸张在运动、截图与边界错位时丢弃该次记录并补拍。
+每次滚动/关闭浮层后先读取新状态，再确定 `safeRect`，使用当前页面适配读取纸页边界及页序后，调用 `recordScoreViewport(tab, safeRect, observedPages, captureSession)`。每份曲谱使用自己的会话对象。安全区域改变时重新记录，不能复用过期坐标。检查已保存截图与记录是否对应；纸张在运动、截图与边界错位时丢弃该次记录并补拍。
 
 ## Manifest 契约
 
@@ -110,7 +97,7 @@ var recordScoreViewport = async function(tab, safeRect, session) {
 
 这些数字仅说明格式，不能当作实际网页坐标。`image` 相对于 manifest 所在目录，也可用本地绝对路径。`viewport`、`safe_rect`、`paper_rect` 全用 CSS 视口坐标；脚本根据截图实际像素计算设备倍率，支持常见的 1×/2× 截图。`pages` 只列该张截图安全区域内实际加载的谱页，同张截图可以包含相邻两页。
 
-`page_count` 必须为正整数；页号从 1 连续到总页数，每张截图的页号不能重复。`safe_rect` 要在视口内，横向包含完整纸张，竖向排除所有覆盖物。脚本可以处理被视口上下裁切的纸张，但不会合成缺失谱面。
+`page_count` 是最终输出的纸页数（无分页时是逻辑页/已确认分段数），必须在末尾核实后为正整数；未知时先采集临时材料，不将暂时看到的数量当作总数执行导出。页号从 1 连续到总页数，每张截图的页号不能重复。`safe_rect` 要在视口内，横向包含完整纸张，竖向排除所有覆盖物。脚本可以处理被视口上下裁切的纸张，但不会合成缺失谱面。
 
 默认不允许任何未覆盖行。若确认纸边被工具栏挡住的几像素完全是留白，可显式补充：
 

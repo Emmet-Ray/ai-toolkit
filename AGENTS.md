@@ -2,7 +2,7 @@
 
 适用于本仓库自建 skill；命名规则用于新建或明确要求改名的情况。
 
-1. **命名**：使用 kebab-case，优先采用“领域或对象 + 以 `-er` / `-or` 结尾的自然英文角色名”，如 `image-generator`、`musescore-snapper`。名称简短、职责明确，同系列结构一致，避免生造词、重名或重复能力。
+1. **命名**：使用 kebab-case，优先采用“领域或对象 + 以 `-er` / `-or` 结尾的自然英文角色名”，如 `image-generator`、`sheet-music-snapper`。名称简短、职责明确，同系列结构一致，避免生造词、重名或重复能力。
 
 2. **配图**：创建 skill 时，同时使用 `visual-summarizer` 生成配图，保存到仓库根目录 `.skill-images/<skill-name>.png`。
 

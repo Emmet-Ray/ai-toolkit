@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sheet Music Snapper"
+  short_description: "搜索或打开各网站可见曲谱，滚动或翻页截图并保存到曲名文件夹"
+  default_prompt: "使用 $sheet-music-snapper 将这份网页曲谱逐页保存为 PNG；如果我未提供保存目录，请先询问确认。"

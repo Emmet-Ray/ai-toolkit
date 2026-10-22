@@ -205,7 +205,7 @@ def export_score(manifest_path: Path, output_dir: Path) -> dict:
         pages.append(image)
     output_dir.mkdir(parents=True, exist_ok=True)
     summary = []
-    with tempfile.TemporaryDirectory(prefix=".musescore-", dir=output_dir) as temporary:
+    with tempfile.TemporaryDirectory(prefix=".sheet-music-", dir=output_dir) as temporary:
         staging = Path(temporary) / title
         staging.mkdir()
         for number, image in enumerate(pages, 1):
