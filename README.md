@@ -78,7 +78,9 @@ $sheet-music-snapper 帮我找《Fly Me To the Moon》的钢琴谱，截图保�
 ### 文档处理
 
 - [tencent-docs](https://docs.qq.com/scenario/open-claw.html)
-- [image-to-editable-ppt](https://github.com/ningzimu/image-to-editable-ppt-skill/tree/main/skills/image-to-editable-ppt)
+- PPT
+  - [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)
+  - [image-to-editable-ppt](https://github.com/ningzimu/image-to-editable-ppt-skill/tree/main/skills/image-to-editable-ppt)
 
 ### 需求梳理与方案讨论
 
