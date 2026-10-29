@@ -1,8 +1,15 @@
-# AI Toolkit
+<img align="left" src="assets/ai-toolkit.png" width="144" hspace="16" alt="黑白剪影 AI 核心，通过可插拔接口连接指令、创作和工具模块">
 
-记录我创建和使用的skills、MCP等AI扩展工具。
+<p><strong>我创建和使用的 AI 扩展工具</strong></p>
 
-## 目录
+<p>
+  <a href="skills/README.md"><strong>Skills</strong></a><br>
+  <sub>自建与第三方技能</sub>
+</p>
 
-- [Skills](skills/README.md)：自建 skills 总览、使用示例和第三方 skills 清单。
-- [MCPs](MCPs/README.md)：我使用的第三方 MCP 清单。
+<p>
+  <a href="MCPs/README.md"><strong>MCPs</strong></a><br>
+  <sub>第三方 MCP</sub>
+</p>
+
+<br clear="both">
