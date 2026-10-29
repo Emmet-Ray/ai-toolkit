@@ -1,93 +1,20 @@
-# skills
+# AI Toolkit
 
-我创建的skills && 我使用的skills。
+我创建的 skills、我使用的第三方 skills 和 MCP。
 
 ## 目录
 
-- [我创建的 skills](#我创建的-skills)
-  - [总览](#总览)
-  - [使用示例](#使用示例)
-- [我使用的第三方 skills](#我使用的第三方-skills)
+- [Skills](skills/README.md)：自建 skills 总览、使用示例和第三方 skills 清单。
+- [MCP](mcp/README.md)：第三方 MCP 的来源、用途、接入方式和配置状态。
 
-## 我创建的 skills
+## 本地使用
 
-### 总览
+自建 skills 位于 `skills/<skill-name>/`，通过绝对路径符号链接安装到 `~/.codex/skills/<skill-name>`。例如，在仓库根目录执行：
 
-<!-- Each skill has its own row group so GitHub does not apply alternating row backgrounds. -->
-<table>
-  <thead>
-    <tr><th align="center">名称</th><th align="left">用途</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><img src=".skill-images/tldr-en-page-maintainer.png" width="160" alt="带 EN 和终端提示符的英文命令页与修改笔"><br><strong><a href="tldr-en-page-maintainer/SKILL.md">tldr-en-page-maintainer</a></strong></td>
-      <td>创建、更新和润色英文 <a href="https://github.com/tldr-pages/tldr">tldr</a> 页面</td>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr>
-      <td align="center"><img src=".skill-images/tldr-zh-page-maintainer.png" width="160" alt="带终端提示符的英文命令页转换为中文命令页"><br><strong><a href="tldr-zh-page-maintainer/SKILL.md">tldr-zh-page-maintainer</a></strong></td>
-      <td>翻译、同步和润色简体中文 <a href="https://github.com/tldr-pages/tldr">tldr</a> 页面</td>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr>
-      <td align="center"><img src=".skill-images/image-generator.png" width="160" alt="画笔笔触化作月亮与山丘画面的剪影"><br><strong><a href="image-generator/SKILL.md">image-generator</a></strong></td>
-      <td>生成、编辑图片</td>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr>
-      <td align="center"><img src=".skill-images/visual-summarizer.png" width="160" alt="书页汇成飞鸟的剪影"><br><strong><a href="visual-summarizer/SKILL.md">visual-summarizer</a></strong></td>
-      <td>生成指定内容的概括性图片</td>
-    </tr>
-  </tbody>
-  <tbody>
-    <tr>
-      <td align="center"><img src=".skill-images/sheet-music-snapper.png" width="160" alt="多个曲谱网页汇入取景框并保存为叠放谱页的剪影"><br><strong><a href="sheet-music-snapper/SKILL.md">sheet-music-snapper</a></strong></td>
-      <td>搜索或打开各网站可见曲谱，滚动或翻页截图保存 PNG</td>
-    </tr>
-  </tbody>
-</table>
-
-### 使用示例
-
-```text
-$tldr-en-page-maintainer 更新 rg 的英文页面。
-$tldr-zh-page-maintainer 同步 rg 的中文页面，与英文版保持一致。
-$image-generator 画一张钢琴主题的手机壁纸。
-$visual-summarizer 给 sheet-music-snapper/ 生成一张概括图。
-$sheet-music-snapper 将这个曲谱链接逐页截图保存到 ~/Music/Scores。
-$sheet-music-snapper 帮我找《Fly Me To the Moon》的钢琴谱，截图保存到 ~/Music/Scores。
+```bash
+ln -s "$PWD/skills/image-generator" "$HOME/.codex/skills/image-generator"
 ```
 
-## 我使用的第三方 skills
+安装前检查目标是否已存在；仓库移动后同步更新已有链接，并确认可以通过链接读取 `SKILL.md`。
 
-### 开发与自动化
-
-#### 前端设计与开发
-
-- [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
-- [web-design-guidelines](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines)
-- [vercel-react-best-practices](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)
-- [vercel-composition-patterns](https://github.com/vercel-labs/agent-skills/tree/main/skills/composition-patterns)
-
-#### 浏览器自动化与测试
-
-- [playwright](https://github.com/openai/skills/tree/main/skills/.curated/playwright)
-- [playwright-interactive](https://github.com/openai/skills/tree/main/skills/.curated/playwright-interactive)
-
-#### 工程实践
-
-- [mattpocock-skills](https://github.com/mattpocock/skills)
-
-### 文档办公
-
-#### 在线文档
-
-- [tencent-docs](https://docs.qq.com/scenario/open-claw.html)
-
-#### PPT
-
-- [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)
-- [image-to-editable-ppt](https://github.com/ningzimu/image-to-editable-ppt-skill/tree/main/skills/image-to-editable-ppt)
+MCP 的实际配置由 [dotfiles](https://github.com/Emmet-Ray/dotfiles) 管理，本仓库记录使用情况和配置位置。
