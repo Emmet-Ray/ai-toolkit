@@ -63,25 +63,31 @@ $sheet-music-snapper 帮我找《Fly Me To the Moon》的钢琴谱，截图保�
 
 ## 我使用的第三方 skills
 
-### 前端开发与设计
+### 开发与自动化
 
-- [frontend-skill](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4)
+#### 前端设计与开发
+
+- [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
+- [web-design-guidelines](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines)
 - [vercel-react-best-practices](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)
 - [vercel-composition-patterns](https://github.com/vercel-labs/agent-skills/tree/main/skills/composition-patterns)
-- [web-design-guidelines](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines)
 
-### 浏览器自动化与测试
+#### 浏览器自动化与测试
 
 - [playwright](https://github.com/openai/skills/tree/main/skills/.curated/playwright)
 - [playwright-interactive](https://github.com/openai/skills/tree/main/skills/.curated/playwright-interactive)
 
-### 文档处理
+#### 工程实践
+
+- [mattpocock-skills](https://github.com/mattpocock/skills)
+
+### 文档办公
+
+#### 在线文档
 
 - [tencent-docs](https://docs.qq.com/scenario/open-claw.html)
-- PPT
-  - [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)
-  - [image-to-editable-ppt](https://github.com/ningzimu/image-to-editable-ppt-skill/tree/main/skills/image-to-editable-ppt)
 
-### 需求梳理与方案讨论
+#### PPT
 
-- [grill-me](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me)
+- [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)
+- [image-to-editable-ppt](https://github.com/ningzimu/image-to-editable-ppt-skill/tree/main/skills/image-to-editable-ppt)
