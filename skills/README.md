@@ -65,6 +65,10 @@ $sheet-music-snapper 帮我找《Fly Me To the Moon》的钢琴谱，截图保�
 
 ### 开发与自动化
 
+#### 代码库理解
+
+- [Understand-Anything](https://github.com/Egonex-AI/Understand-Anything)
+
 #### 前端设计与开发
 
 - [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
